@@ -22,15 +22,15 @@ You can check all you need to obtain in [**HERE**](fill_link_here).
 
 ---
 
-<a href="https://github.com/n3wbeee" target="_blank"><text>n3wbeee<text/></a> did all the job in software, but he have to admit that he just a guy coding shits and copy from everywhere.
+<a href="https://github.com/n3wbeee" target="_blank"><text>n3wbeee<text/></a> did all the job in software, but he have to admit that he just coding shits and copy from everywhere.
 
 Thanks **Arduino** and **u8g2** made things easier.
 
 With the code he copied, this Monitor has smooth anmations when changing pages, like this:
 
-![Picture Loading Failed]()
+![There should be a gif]()
 
-not bad, right?
+Not bad, right?
 
 # User Guidance
 
@@ -42,3 +42,4 @@ This project based on Vscode plugin **PlatformIO**, go check it.
 
 ### Menu
 
+I'll fill this param later, probably.
