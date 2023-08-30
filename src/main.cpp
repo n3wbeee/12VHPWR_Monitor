@@ -26,7 +26,7 @@ void setup(void) {
 	u8g2.begin();  // 选择U8G2模式
 	Serial.begin(115200);
 
-	/* 注册页面 */
+	// !!! 请在此处注册页面
 	pageMap["home"] = homePage;
 	pageMap["setting"] = settingPage;
 
@@ -37,8 +37,10 @@ void setup(void) {
 
 /* 事实上, loop运行在一个优先级为1的任务上 */
 void loop(void) {
-	delay(1500);
+	delay(3000);
 	pageNow = "setting";
+	delay(3000);
+	pageNow = "home";
 }
 
 /* 页面绘制实现, 请莫在此处sendBuffer */
@@ -53,29 +55,46 @@ void homePage() {
 
 void settingPage() {
 	u8g2.clearBuffer();
+	u8g2.setFont(u8g2_font_helvR08_tr);
+	u8g2.drawStr(16, 24, "Hello World");
+	u8g2.setDrawColor(2);
+	u8g2.drawBox(0, 0, 128, 32);
+	u8g2.setDrawColor(1);
 };
 
 /*渲染实现*/
 void renderer(void* param) {
 	Serial.println("Display Task Create!");
-	String prevPage = pageNow;
+	String prevPage = pageNow;	// 用于判断页面是否发生变化
 	while (true) {
-		if (pageNow == prevPage) {
+		if (pageNow == prevPage) {	// 页面未发生变化
 			prevPage = pageNow;
-			pageMap[pageNow]();
+			pageMap[pageNow]();	 // 调用页面绘制函数
 			u8g2.sendBuffer();
 		} else {
 			prevPage = pageNow;
 			uint16_t len = 8 * u8g2.getBufferTileHeight() * u8g2.getBufferTileWidth();
 			uint8_t* p = u8g2.getBufferPtr();
-			short disappearTemp = 0;
+			short animeTemp = 0;
+			/* 神秘的退出动画代码 */
 			for (int loop = 0; loop <= 4; loop++) {
 				for (int i = 0; i < len; i++) {
-					p[i] = p[i] & (rand() % 0xff) >> disappearTemp;
+					p[i] = p[i] & (rand() % 0xff) >> animeTemp;
 				}
-				disappearTemp += 2;
+				animeTemp += 2;
 				u8g2.sendBuffer();
-				delay(25);
+				// delay(10);
+			}
+			/* 神秘的进入动画代码 */
+			animeTemp = 8;
+			for (int loop = 0; loop <= 4; loop++) {
+				pageMap[pageNow]();	 // 调用页面绘制函数
+				for (int i = 0; i < len; i++) {
+					p[i] = p[i] & (rand() % 0xff) >> animeTemp;
+				}
+				animeTemp -= 2;
+				u8g2.sendBuffer();
+				// delay(10);
 			}
 		}
 	}
